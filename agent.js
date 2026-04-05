@@ -21,6 +21,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ── Show edit button only for owners ────────────────────────────────────
+  const editBtn = document.getElementById('editAgentBtn');
+  const userRole = localStorage.getItem('userRole');
+  if (editBtn && userRole === 'owner') {
+    editBtn.classList.remove('navbar__edit-btn--hidden');
+  }
+
   // ── Load config from localStorage ──────────────────────────────────────────
   const raw = localStorage.getItem('agentConfig');
   if (!raw) {

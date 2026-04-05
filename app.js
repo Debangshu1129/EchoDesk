@@ -187,6 +187,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // 1. Save as active agent config
       localStorage.setItem('agentConfig', JSON.stringify(agentConfig));
 
+      // 1b. Mark user as owner so edit button is visible
+      localStorage.setItem('userRole', 'owner');
+
       // 2. Save to business registry keyed by phone number
       const registry = JSON.parse(localStorage.getItem('businessRegistry') || '{}');
       registry[phone] = agentConfig;

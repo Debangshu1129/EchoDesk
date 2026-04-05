@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Edit your EchoDesk AI voice agent — update business details, FAQs, and more.">
+  <title>EchoDesk – Edit Agent</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="edit-view">
+
+  <!-- ========== TOAST ========== -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ========== NAVBAR ========== -->
+  <nav class="navbar" id="navbar">
+    <a href="index.html" class="navbar__brand">EchoDesk</a>
+    <div class="navbar__right">
+      <span class="navbar__user-greeting" id="navUserGreeting"></span>
+      <a href="index.html" class="navbar__link">Home</a>
+      <a href="create.html" class="navbar__link">For Businesses</a>
+      <button class="navbar__logout" id="logoutBtn" title="Log out">Log out</button>
+    </div>
+  </nav>
+
+  <!-- ========== EDIT FORM ========== -->
+  <section class="form-section form-section--page" id="editAgent">
+
+    <div class="form-section__header">
+      <div>
+        <h1 class="form-section__title">✏️ Edit Your Agent</h1>
+        <p class="form-section__subtitle">Update your business details and FAQs. Changes take effect immediately.</p>
+      </div>
+    </div>
+
+    <form class="agent-form" id="editForm" autocomplete="off">
+
+      <!-- Business Name -->
+      <div class="form-group">
+        <label class="form-label" for="editBusinessName">Business Name</label>
+        <input
+          class="form-input"
+          type="text"
+          id="editBusinessName"
+          name="businessName"
+          placeholder="e.g. Sharma Dental Clinic"
+          required
+        >
+      </div>
+
+      <!-- Agent Name -->
+      <div class="form-group">
+        <label class="form-label" for="editAgentName">Agent Name</label>
+        <input
+          class="form-input"
+          type="text"
+          id="editAgentName"
+          name="agentName"
+          placeholder="e.g. Riya"
+          required
+        >
+      </div>
+
+      <!-- Business Description -->
+      <div class="form-group">
+        <label class="form-label" for="editBusinessDesc">Business Description</label>
+        <textarea
+          class="form-input form-input--textarea"
+          id="editBusinessDesc"
+          name="businessDesc"
+          rows="4"
+          placeholder="What does your business do?"
+        ></textarea>
+      </div>
+
+      <!-- Business Hours -->
+      <div class="form-group">
+        <label class="form-label" for="editBusinessHours">Business Hours</label>
+        <input
+          class="form-input"
+          type="text"
+          id="editBusinessHours"
+          name="businessHours"
+          placeholder="e.g. Mon–Sat, 10 am to 7 pm"
+        >
+      </div>
+
+      <!-- Business Phone Number -->
+      <div class="form-group">
+        <label class="form-label" for="editBusinessPhone">Business Phone Number</label>
+        <input
+          class="form-input"
+          type="tel"
+          id="editBusinessPhone"
+          name="businessPhone"
+          placeholder="e.g. 9876543210"
+          maxlength="15"
+        >
+        <span class="form-hint">Customers search this number to reach your agent.</span>
+      </div>
+
+      <!-- ── Dynamic FAQ Section ── -->
+      <div class="faq-section">
+        <div class="faq-section__header">
+          <div>
+            <h2 class="faq-section__title">Frequently Asked Questions</h2>
+            <p class="faq-section__desc">Edit, add, or remove FAQs. Max 10.</p>
+          </div>
+          <button type="button" class="btn--add-faq edit-add-faq" id="editAddFaqBtn">
+            <span>+</span> Add FAQ
+          </button>
+        </div>
+
+        <!-- FAQ blocks injected here -->
+        <div class="faq-list" id="editFaqList"></div>
+      </div>
+
+      <!-- Actions -->
+      <div class="edit-actions">
+        <button class="btn btn--primary btn--glow btn--full" type="submit" id="saveChangesBtn">
+          💾 Save Changes
+        </button>
+        <a href="agent.html" class="btn btn--secondary btn--full" id="backToAgentBtn">
+          ← Back to Agent
+        </a>
+      </div>
+
+    </form>
+  </section>
+
+  <script src="edit.js"></script>
+</body>
+</html>
