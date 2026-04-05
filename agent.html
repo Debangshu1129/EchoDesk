@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Talk to your EchoDesk AI voice receptionist.">
+  <title>EchoDesk – Talk to Your Agent</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="agent-view">
+
+  <!-- ========== TOAST ========== -->
+  <div class="toast" id="toast">Your agent is ready! 🎉</div>
+
+  <!-- ========== NAVBAR ========== -->
+  <nav class="navbar" id="navbar">
+    <a href="index.html" class="navbar__brand">EchoDesk</a>
+    <div class="navbar__right">
+      <span class="navbar__user-greeting" id="navUserGreeting"></span>
+      <a href="index.html" class="navbar__link">Home</a>
+      <a href="create.html" class="navbar__link">For Businesses</a>
+      <button class="navbar__logout" id="logoutBtn" title="Log out">Log out</button>
+    </div>
+  </nav>
+
+  <!-- ========== AGENT PAGE WRAPPER ========== -->
+  <main class="agent-page" id="agentPage">
+
+    <!-- Agent Identity -->
+    <header class="agent-header" id="agentHeader">
+      <div class="agent-header__avatar" id="agentAvatar"></div>
+      <h1 class="agent-header__name" id="agentGreeting"></h1>
+      <p class="agent-header__business" id="agentBusiness"></p>
+    </header>
+
+    <!-- Mic Button -->
+    <section class="mic-section" id="micSection">
+      <button class="mic-btn" id="micBtn" aria-label="Click to speak">
+        <svg class="mic-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2H3v2a9 9 0 0 0 8 8.94V23h2v-2.06A9 9 0 0 0 21 12v-2h-2z"/>
+        </svg>
+      </button>
+      <div class="mic-ripple" id="micRipple"></div>
+      <p class="mic-status" id="micStatus">Click to speak</p>
+      <button class="mute-btn" id="muteBtn" aria-label="Toggle mute">
+        <span class="mute-btn__icon" id="muteIcon">🔊</span>
+        <span class="mute-btn__label" id="muteBtnLabel">Mute</span>
+      </button>
+      <p class="keyboard-hint">Tip: press <kbd>Space</kbd> to start / stop</p>
+    </section>
+
+    <!-- Transcript + Response -->
+    <section class="transcript-section" id="transcriptSection">
+
+      <div class="transcript-box" id="userTranscriptBox">
+        <span class="transcript-box__label transcript-box__label--user">You said:</span>
+        <p class="transcript-box__text" id="userTranscript">—</p>
+      </div>
+
+      <div class="transcript-box" id="agentResponseBox">
+        <span class="transcript-box__label transcript-box__label--agent" id="agentLabel"></span>
+        <p class="transcript-box__text" id="agentResponse">—</p>
+
+        <!-- Thinking dots -->
+        <div class="thinking-dots" id="thinkingDots" aria-label="Thinking">
+          <span></span><span></span><span></span>
+        </div>
+
+        <!-- Soundwave -->
+        <div class="soundwave" id="soundwave" aria-hidden="true">
+          <span class="soundwave__bar"></span>
+          <span class="soundwave__bar"></span>
+          <span class="soundwave__bar"></span>
+          <span class="soundwave__bar"></span>
+          <span class="soundwave__bar"></span>
+          <span class="soundwave__bar"></span>
+          <span class="soundwave__bar"></span>
+        </div>
+      </div>
+
+      <!-- Forwarded notice + chat input (hidden by default) -->
+      <div class="forward-notice forward-notice--hidden" id="forwardNotice">
+        <p class="forward-notice__text">📩 I've forwarded your question to the team. You can also type your question directly:</p>
+        <div class="forward-chat-input">
+          <input
+            class="form-input"
+            type="text"
+            id="customerChatInput"
+            placeholder="Type your question here..."
+          >
+          <button class="btn btn--primary" id="customerChatSend">Send</button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Direct Messages Section -->
+    <section class="dm-section dm-section--hidden" id="dmSection">
+      <h2 class="chat-section__title">💬 Messages with Shop</h2>
+      <div class="chat-history" id="dmHistory"></div>
+    </section>
+
+    <!-- Conversation History -->
+    <section class="chat-section" id="chatSection">
+      <h2 class="chat-section__title">Conversation</h2>
+      <div class="chat-history" id="chatHistory">
+        <p class="chat-history__empty" id="chatEmpty">Your conversation will appear here.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="env.js"></script>
+  <script src="config.js"></script>
+  <script src="agent.js"></script>
+</body>
+</html>

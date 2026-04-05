@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sign in or create an EchoDesk account to build your AI voice agent.">
+  <title>EchoDesk – Sign In</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-view">
+
+  <!-- ========== NAVBAR ========== -->
+  <nav class="navbar" id="navbar">
+    <a href="index.html" class="navbar__brand">EchoDesk</a>
+    <a href="index.html" class="navbar__back">← Back to Home</a>
+  </nav>
+
+  <!-- ========== AUTH PAGE ========== -->
+  <main class="auth-page">
+
+    <div class="auth-card">
+
+      <!-- Logo mark -->
+      <div class="auth-card__logo">✦</div>
+      <p class="auth-card__tagline">Your AI Voice Agent Awaits</p>
+
+      <!-- Tab toggle -->
+      <div class="auth-tabs" role="tablist">
+        <button class="auth-tab auth-tab--active" id="tabSignup" data-tab="signup" role="tab" aria-selected="true">
+          Sign Up
+        </button>
+        <button class="auth-tab" id="tabLogin" data-tab="login" role="tab" aria-selected="false">
+          Log In
+        </button>
+      </div>
+
+      <!-- Error banner -->
+      <div class="auth-error" id="authError" role="alert"></div>
+
+      <!-- ── Sign Up Form ── -->
+      <form class="auth-form" id="signupForm" novalidate>
+
+        <div class="form-group">
+          <label class="form-label" for="signupName">Full Name</label>
+          <input
+            class="form-input"
+            type="text"
+            id="signupName"
+            placeholder="e.g. Priya Sharma"
+            autocomplete="name"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="signupEmail">Email</label>
+          <input
+            class="form-input"
+            type="email"
+            id="signupEmail"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="signupPassword">Password</label>
+          <div class="input-password-wrap">
+            <input
+              class="form-input"
+              type="password"
+              id="signupPassword"
+              placeholder="Min 6 characters"
+              autocomplete="new-password"
+              required
+            >
+            <button type="button" class="toggle-pw" data-target="signupPassword" aria-label="Show password">👁</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="signupConfirm">Confirm Password</label>
+          <div class="input-password-wrap">
+            <input
+              class="form-input"
+              type="password"
+              id="signupConfirm"
+              placeholder="Re-enter password"
+              autocomplete="new-password"
+              required
+            >
+            <button type="button" class="toggle-pw" data-target="signupConfirm" aria-label="Show password">👁</button>
+          </div>
+        </div>
+
+        <button class="btn btn--primary btn--glow btn--full" type="submit" id="signupBtn">
+          Create Account <span class="btn__arrow">→</span>
+        </button>
+
+        <p class="auth-switch">
+          Already have an account?
+          <button type="button" class="auth-switch__link" data-switch="login">Log in here</button>
+        </p>
+
+      </form>
+
+      <!-- ── Login Form ── -->
+      <form class="auth-form auth-form--hidden" id="loginForm" novalidate>
+
+        <div class="form-group">
+          <label class="form-label" for="loginEmail">Email</label>
+          <input
+            class="form-input"
+            type="email"
+            id="loginEmail"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="loginPassword">Password</label>
+          <div class="input-password-wrap">
+            <input
+              class="form-input"
+              type="password"
+              id="loginPassword"
+              placeholder="Your password"
+              autocomplete="current-password"
+              required
+            >
+            <button type="button" class="toggle-pw" data-target="loginPassword" aria-label="Show password">👁</button>
+          </div>
+        </div>
+
+        <button class="btn btn--primary btn--glow btn--full" type="submit" id="loginBtn">
+          Log In <span class="btn__arrow">→</span>
+        </button>
+
+        <p class="auth-switch">
+          Don't have an account?
+          <button type="button" class="auth-switch__link" data-switch="signup">Sign up here</button>
+        </p>
+
+      </form>
+
+    </div>
+  </main>
+
+  <script src="auth.js"></script>
+</body>
+</html>

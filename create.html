@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Set up your EchoDesk AI voice agent — fill in your business details and go live in seconds.">
+  <title>EchoDesk – Create Your Agent</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ========== NAVBAR ========== -->
+  <nav class="navbar" id="navbar">
+    <a href="index.html" class="navbar__brand">EchoDesk</a>
+    <div class="navbar__right">
+      <span class="navbar__user-greeting" id="navUserGreeting"></span>
+      <a href="index.html" class="navbar__link">Home</a>
+      <a href="index.html#customerSearch" class="navbar__link">Find a Business</a>
+      <button class="navbar__logout" id="logoutBtn" title="Log out">Log out</button>
+    </div>
+  </nav>
+
+  <!-- ========== FORM SECTION ========== -->
+  <section class="form-section form-section--page" id="createAgent">
+
+    <div class="form-section__header">
+      <div>
+        <h1 class="form-section__title">Create Your Agent</h1>
+        <p class="form-section__subtitle">Fill in your business details and we'll build your AI receptionist.</p>
+      </div>
+      <button class="btn btn--demo btn--demo-sm" type="button" id="demoFillBtn">✨ Demo Fill</button>
+    </div>
+
+    <form class="agent-form" id="agentForm" autocomplete="off">
+
+      <!-- Business Name -->
+      <div class="form-group">
+        <label class="form-label" for="businessName">Business Name</label>
+        <input
+          class="form-input"
+          type="text"
+          id="businessName"
+          name="businessName"
+          placeholder="e.g. Sharma Dental Clinic"
+          required
+        >
+      </div>
+
+      <!-- Business Phone Number -->
+      <div class="form-group">
+        <label class="form-label" for="businessPhone">Business Phone Number</label>
+        <input
+          class="form-input"
+          type="tel"
+          id="businessPhone"
+          name="businessPhone"
+          placeholder="e.g. 9876543210"
+          maxlength="15"
+          required
+        >
+        <span class="form-hint">Customers will search this number to reach your agent.</span>
+      </div>
+
+      <!-- Agent Name -->
+      <div class="form-group">
+        <label class="form-label" for="agentName">Agent Name</label>
+        <input
+          class="form-input"
+          type="text"
+          id="agentName"
+          name="agentName"
+          placeholder="e.g. Riya"
+          required
+        >
+      </div>
+
+      <!-- Business Description -->
+      <div class="form-group">
+        <label class="form-label" for="businessDesc">What does your business do?</label>
+        <textarea
+          class="form-input form-input--textarea"
+          id="businessDesc"
+          name="businessDesc"
+          rows="4"
+          placeholder="e.g. We are a dental clinic offering checkups, root canals and teeth whitening"
+          required
+        ></textarea>
+      </div>
+
+      <!-- Business Hours -->
+      <div class="form-group">
+        <label class="form-label" for="businessHours">Business Hours</label>
+        <input
+          class="form-input"
+          type="text"
+          id="businessHours"
+          name="businessHours"
+          placeholder="e.g. Mon–Sat, 10 am to 7 pm"
+          required
+        >
+      </div>
+
+      <!-- ── Dynamic FAQ Section ── -->
+      <div class="faq-section">
+        <div class="faq-section__header">
+          <div>
+            <h2 class="faq-section__title">Frequently Asked Questions</h2>
+            <p class="faq-section__desc">Add as many questions as you like. Your agent will use these to answer callers.</p>
+          </div>
+          <button type="button" class="btn--add-faq" id="addFaqBtn">
+            <span>+</span> Add FAQ
+          </button>
+        </div>
+
+        <!-- FAQ blocks injected here by app.js -->
+        <div class="faq-list" id="faqList"></div>
+      </div>
+
+      <!-- Submit -->
+      <button class="btn btn--primary btn--glow btn--full" type="submit" id="createAgentBtn">
+        Create My Agent <span class="btn__arrow">→</span>
+      </button>
+
+    </form>
+  </section>
+
+  <!-- ========== SUCCESS SCREEN (hidden by default) ========== -->
+  <section class="success-screen success-screen--hidden" id="successScreen">
+    <div class="success-card">
+      <div class="success-card__icon">🎉</div>
+      <h2 class="success-card__title">Your Agent is Live!</h2>
+      <p class="success-card__desc" id="successDesc"></p>
+      <div class="success-card__phone-box" id="successPhoneBox"></div>
+      <div class="success-card__actions">
+        <a href="agent.html" class="btn btn--primary btn--glow">
+          Talk to Your Agent <span class="btn__arrow">→</span>
+        </a>
+        <a href="index.html" class="btn btn--demo">← Back to Home</a>
+      </div>
+    </div>
+  </section>
+
+  <script src="env.js"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

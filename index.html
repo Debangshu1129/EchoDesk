@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Build your AI voice receptionist in 60 seconds. No coding, no call centre — just fill a form.">
+  <title>EchoDesk – Build Your AI Voice Receptionist</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ========== NAVBAR ========== -->
+  <nav class="navbar" id="navbar">
+    <a href="index.html" class="navbar__brand">EchoDesk</a>
+    <div class="navbar__right">
+      <span class="navbar__user-greeting" id="navUserGreeting"></span>
+      <a href="create.html" class="navbar__link">For Businesses</a>
+      <a href="#customerSearch" class="navbar__link">Find a Business</a>
+      <a href="#myMessages" class="navbar__link">My Messages</a>
+      <button class="navbar__logout navbar__logout--hidden" id="logoutBtn" title="Log out">Log out</button>
+    </div>
+  </nav>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero" id="hero">
+    <div class="hero__glow"></div>
+
+    <div class="hero__badge">✦ No code required</div>
+
+    <h1 class="hero__heading">
+      Build Your AI Voice<br>
+      Receptionist <span class="hero__heading--accent">in 60 Seconds</span>
+    </h1>
+    <p class="hero__sub">No coding. No call centre. Just fill a form and your AI agent is live.</p>
+
+    <div class="hero__cta-group">
+      <a href="create.html" class="btn btn--primary btn--glow" id="heroGetStarted">
+        Get Started <span class="btn__arrow">→</span>
+      </a>
+      <a href="create.html?demo=true" class="btn btn--demo" id="heroDemoBtn">
+        ✨ Try Demo
+      </a>
+    </div>
+
+    <!-- Feature pills -->
+    <div class="hero__features">
+      <span class="hero__feature-pill">🎤 Voice powered</span>
+      <span class="hero__feature-pill">🤖 Gemini AI</span>
+      <span class="hero__feature-pill">⚡ Ready in 60s</span>
+      <span class="hero__feature-pill">📞 FAQ aware</span>
+    </div>
+  </section>
+
+  <!-- ========== CUSTOMER SEARCH ========== -->
+  <section class="search-section" id="customerSearch">
+    <div class="search-card">
+      <h2 class="search-card__title">🔍 Find a Business</h2>
+      <p class="search-card__desc">Search by phone number or shop name to connect to their AI agent.</p>
+
+      <div class="search-bar">
+        <input class="form-input search-bar__input" type="text" id="searchInput"
+          placeholder="Phone number or shop name…" autocomplete="off">
+        <button class="btn btn--primary search-bar__btn" id="searchConnectBtn">
+          Connect <span class="btn__arrow">→</span>
+        </button>
+      </div>
+
+      <!-- Live search results dropdown -->
+      <div class="search-results" id="searchResults"></div>
+
+      <p class="search-error" id="searchError"></p>
+    </div>
+  </section>
+
+  <!-- ========== MY MESSAGES (Chat View) ========== -->
+  <section class="home-messages" id="myMessages">
+    <div class="home-messages__card">
+      <div class="home-messages__header">
+        <h2 class="home-messages__title">💬 My Messages</h2>
+        <span class="home-messages__count" id="homeMsgCount"></span>
+      </div>
+
+      <div class="home-messages__empty" id="msgEmpty">
+        <p>No messages yet. When you talk to an AI agent and it can't answer, your question will appear here.</p>
+      </div>
+
+      <div class="home-chat" id="homeChatArea"></div>
+    </div>
+  </section>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ── Auth guard ────────────────────────────────────────────────────────
+    (function () {
+      var session = JSON.parse(localStorage.getItem('echoSession') || 'null');
+      if (!session) {
+        window.location.href = 'auth.html';
+        return;
+      }
+
+      // User greeting + logout
+      var greeting = document.getElementById('navUserGreeting');
+      var logoutBtn = document.getElementById('logoutBtn');
+
+      if (greeting) greeting.textContent = '👋 ' + session.name;
+      if (logoutBtn) {
+        logoutBtn.classList.remove('navbar__logout--hidden');
+        logoutBtn.addEventListener('click', function () {
+          localStorage.removeItem('echoSession');
+          window.location.href = 'auth.html';
+        });
+      }
+
+      // ── Customer search (phone + name) ─────────────────────────────────
+      var searchInput = document.getElementById('searchInput');
+      var connectBtn = document.getElementById('searchConnectBtn');
+      var searchError = document.getElementById('searchError');
+      var searchResults = document.getElementById('searchResults');
+      var toast = document.getElementById('toast');
+
+      function cleanPhone(raw) {
+        var cleaned = raw.replace(/[\s\-().\u2013\u2014]/g, '');
+        cleaned = cleaned.replace(/^(\+91|091|0)/, '');
+        return cleaned;
+      }
+
+      function getRegistry() {
+        return JSON.parse(localStorage.getItem('businessRegistry') || '{}');
+      }
+
+      function searchRegistry(query) {
+        var registry = getRegistry();
+        var results = [];
+        var q = query.toLowerCase().trim();
+        if (!q) return results;
+
+        var digits = q.replace(/\D/g, '');
+        var isPhoneQuery = digits.length >= 4;
+
+        for (var phone in registry) {
+          var config = registry[phone];
+          if (isPhoneQuery) {
+            if (phone.indexOf(digits) !== -1 || phone.indexOf(cleanPhone(q)) !== -1) {
+              results.push({ phone: phone, config: config, matchType: 'phone' });
+            }
+          }
+          var name = (config.businessName || '').toLowerCase();
+          if (name.indexOf(q) !== -1) {
+            var alreadyAdded = results.some(function (r) { return r.phone === phone; });
+            if (!alreadyAdded) {
+              results.push({ phone: phone, config: config, matchType: 'name' });
+            }
+          }
+        }
+        return results;
+      }
+
+      function connectToBusiness(config) {
+        localStorage.setItem('agentConfig', JSON.stringify(config));
+        toast.textContent = 'Connecting you to ' + config.agentName + ' at ' + config.businessName + '…';
+        toast.classList.add('toast--visible');
+        searchResults.innerHTML = '';
+        setTimeout(function () { window.location.href = 'agent.html'; }, 1500);
+      }
+
+      function renderResults(results) {
+        searchResults.innerHTML = '';
+        if (results.length === 0) return;
+        results.forEach(function (r) {
+          var item = document.createElement('button');
+          item.className = 'search-result-item';
+          item.innerHTML =
+            '<span class="search-result-item__name">' + r.config.businessName + '</span>' +
+            '<span class="search-result-item__meta">📞 ' + r.phone + ' · Agent: ' + r.config.agentName + '</span>';
+          item.addEventListener('click', function () { connectToBusiness(r.config); });
+          searchResults.appendChild(item);
+        });
+      }
+
+      searchInput.addEventListener('input', function () {
+        searchError.textContent = '';
+        searchError.className = 'search-error';
+        var query = searchInput.value.trim();
+        if (query.length < 2) { searchResults.innerHTML = ''; return; }
+        renderResults(searchRegistry(query));
+      });
+
+      connectBtn.addEventListener('click', function () {
+        searchError.textContent = '';
+        searchError.className = 'search-error';
+        searchResults.innerHTML = '';
+        var query = searchInput.value.trim();
+        if (!query || query.length < 2) {
+          searchError.textContent = 'Please enter a phone number or shop name.';
+          searchError.classList.add('search-error--visible', 'search-error--red');
+          return;
+        }
+        var results = searchRegistry(query);
+        if (results.length === 1) { connectToBusiness(results[0].config); }
+        else if (results.length > 1) { renderResults(results); }
+        else {
+          searchError.textContent = 'No agent found. Ask the business to register on EchoDesk.';
+          searchError.classList.add('search-error--visible', 'search-error--red');
+        }
+      });
+
+      searchInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); connectBtn.click(); }
+      });
+
+      document.addEventListener('click', function (e) {
+        if (!e.target.closest('.search-card')) { searchResults.innerHTML = ''; }
+      });
+
+      // ══════════════════════════════════════════════════════════════════════
+      //  MY MESSAGES — Chat view on home page
+      // ══════════════════════════════════════════════════════════════════════
+
+      var homeChatArea = document.getElementById('homeChatArea');
+      var msgEmpty = document.getElementById('msgEmpty');
+      var homeMsgCount = document.getElementById('homeMsgCount');
+      var customerName = session.name || 'Customer';
+      var registry = getRegistry();
+
+      function getMyMessages() {
+        var all = JSON.parse(localStorage.getItem('pendingMessages') || '[]');
+        // Show messages sent by this user
+        return all.filter(function (m) { return m.customerName === customerName; });
+      }
+
+      function getBusinessName(phone) {
+        return registry[phone] ? registry[phone].businessName : phone;
+      }
+
+      function renderHomeChat() {
+        var msgs = getMyMessages();
+
+        if (msgs.length === 0) {
+          msgEmpty.style.display = 'block';
+          homeChatArea.innerHTML = '';
+          homeMsgCount.textContent = '';
+          return;
+        }
+
+        msgEmpty.style.display = 'none';
+        var pending = msgs.filter(function (m) { return m.status === 'pending'; }).length;
+        homeMsgCount.textContent = pending > 0 ? pending + ' pending' : msgs.length + ' messages';
+
+        // Group by business phone
+        var groups = {};
+        msgs.forEach(function (m) {
+          if (!groups[m.businessPhone]) groups[m.businessPhone] = [];
+          groups[m.businessPhone].push(m);
+        });
+
+        homeChatArea.innerHTML = '';
+
+        for (var phone in groups) {
+          var thread = groups[phone];
+          var bizName = getBusinessName(phone);
+
+          // Thread card
+          var threadCard = document.createElement('div');
+          threadCard.className = 'home-chat-thread';
+
+          // Thread header
+          var header = document.createElement('div');
+          header.className = 'home-chat-thread__header';
+          header.innerHTML =
+            '<span class="home-chat-thread__biz">' + bizName + '</span>' +
+            '<span class="home-chat-thread__phone">📞 ' + phone + '</span>';
+          threadCard.appendChild(header);
+
+          // Messages
+          var chatBody = document.createElement('div');
+          chatBody.className = 'home-chat-thread__body';
+
+          thread.sort(function (a, b) { return a.id - b.id; });
+
+          thread.forEach(function (m) {
+            // Customer bubble (right)
+            var custDiv = document.createElement('div');
+            custDiv.className = 'hchat-bubble hchat-bubble--customer';
+            custDiv.innerHTML =
+              '<p>' + m.customerMessage + '</p>' +
+              '<span class="hchat-time">' + new Date(m.timestamp).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) + '</span>';
+            chatBody.appendChild(custDiv);
+
+            // Reply or awaiting
+            if (m.agentReply) {
+              var replyDiv = document.createElement('div');
+              replyDiv.className = 'hchat-bubble hchat-bubble--shop';
+              replyDiv.innerHTML =
+                '<span class="hchat-sender">' + bizName + '</span>' +
+                '<p>' + m.agentReply + '</p>' +
+                '<span class="hchat-status hchat-status--replied">Replied ✓</span>';
+              chatBody.appendChild(replyDiv);
+            } else {
+              var awaitDiv = document.createElement('div');
+              awaitDiv.className = 'hchat-awaiting';
+              awaitDiv.textContent = '⏳ Awaiting reply…';
+              chatBody.appendChild(awaitDiv);
+            }
+          });
+
+          threadCard.appendChild(chatBody);
+
+          // Connect button for this thread
+          var connectDiv = document.createElement('div');
+          connectDiv.className = 'home-chat-thread__footer';
+          var connBtn = document.createElement('button');
+          connBtn.className = 'btn btn--primary btn--sm';
+          connBtn.textContent = '🎤 Talk to ' + bizName;
+          connBtn.dataset.phone = phone;
+          connBtn.addEventListener('click', function () {
+            var p = this.dataset.phone;
+            var reg = getRegistry();
+            if (reg[p]) connectToBusiness(reg[p]);
+          });
+          connectDiv.appendChild(connBtn);
+          threadCard.appendChild(connectDiv);
+
+          homeChatArea.appendChild(threadCard);
+        }
+      }
+
+      // Initial render
+      renderHomeChat();
+
+      // Poll every 5s for new replies
+      setInterval(function () {
+        renderHomeChat();
+      }, 5000);
+
+    })();
+  </script>
+</body>
+
+</html>

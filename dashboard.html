@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EchoDesk shopkeeper dashboard — view and reply to customer messages.">
+  <title>EchoDesk – Shop Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dashboard-view">
+
+  <!-- ========== NAVBAR ========== -->
+  <nav class="navbar" id="navbar">
+    <a href="index.html" class="navbar__brand">EchoDesk</a>
+    <div class="navbar__right">
+      <a href="index.html" class="navbar__link">Home</a>
+      <a href="create.html" class="navbar__link">For Businesses</a>
+      <span class="navbar__pending-badge" id="navPendingBadge"></span>
+      <button class="navbar__logout" id="logoutBtn" title="Log out">Log out</button>
+    </div>
+  </nav>
+
+  <!-- ========== LOGIN GATE ========== -->
+  <section class="dash-login" id="dashLogin">
+    <div class="dash-login__card">
+      <div class="dash-login__icon">📊</div>
+      <h1 class="dash-login__title">Shop Dashboard</h1>
+      <p class="dash-login__desc">Enter your registered phone number to view customer messages.</p>
+      <div class="search-bar">
+        <input
+          class="form-input search-bar__input"
+          type="tel"
+          id="dashPhone"
+          placeholder="e.g. 9876543210"
+          maxlength="15"
+        >
+        <button class="btn btn--primary search-bar__btn" id="dashLoginBtn">
+          View Dashboard <span class="btn__arrow">→</span>
+        </button>
+      </div>
+      <p class="search-error" id="dashError"></p>
+    </div>
+  </section>
+
+  <!-- ========== DASHBOARD (hidden until login) ========== -->
+  <main class="dash-main dash-main--hidden" id="dashMain">
+
+    <!-- Sidebar: message list -->
+    <aside class="dash-sidebar" id="dashSidebar">
+      <div class="dash-sidebar__header">
+        <h2 class="dash-sidebar__title">Messages</h2>
+        <span class="dash-sidebar__count" id="pendingCount">0 pending</span>
+      </div>
+      <div class="dash-sidebar__list" id="messageList">
+        <p class="dash-sidebar__empty" id="sidebarEmpty">No messages yet.</p>
+      </div>
+    </aside>
+
+    <!-- Right panel: selected conversation -->
+    <section class="dash-panel" id="dashPanel">
+      <div class="dash-panel__placeholder" id="panelPlaceholder">
+        <p>👈 Select a message from the sidebar to view details.</p>
+      </div>
+
+      <div class="dash-panel__thread dash-panel__thread--hidden" id="panelThread">
+        <div class="dash-panel__thread-header" id="threadHeader"></div>
+        <div class="dash-panel__thread-body" id="threadBody"></div>
+        <div class="dash-panel__reply-box" id="replyBox">
+          <input
+            class="form-input"
+            type="text"
+            id="replyInput"
+            placeholder="Type your reply…"
+          >
+          <button class="btn btn--primary" id="replyBtn">
+            Send Reply <span class="btn__arrow">→</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
