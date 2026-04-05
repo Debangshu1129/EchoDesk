@@ -49,7 +49,10 @@
     <aside class="dash-sidebar" id="dashSidebar">
       <div class="dash-sidebar__header">
         <h2 class="dash-sidebar__title">Messages</h2>
-        <span class="dash-sidebar__count" id="pendingCount">0 pending</span>
+        <div class="dash-sidebar__actions">
+          <a href="edit.html" class="navbar__edit-btn dash-edit-btn" id="dashEditBtn" title="Edit My Agent" onclick="localStorage.setItem('userRole','owner')">✏️ Edit My Agent</a>
+          <span class="dash-sidebar__count" id="pendingCount">0 pending</span>
+        </div>
       </div>
       <div class="dash-sidebar__list" id="messageList">
         <p class="dash-sidebar__empty" id="sidebarEmpty">No messages yet.</p>

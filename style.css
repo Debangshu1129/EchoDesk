@@ -2461,3 +2461,150 @@ body.dashboard-view {
     max-width: 90%;
   }
 }
+
+/* ===========================
+   NAVBAR — EDIT AGENT BUTTON
+   =========================== */
+
+.navbar__edit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: rgba(0, 255, 136, 0.08);
+  border: 1px solid rgba(0, 255, 136, 0.25);
+  border-radius: 8px;
+  padding: 6px 14px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.navbar__edit-btn:hover {
+  background: rgba(0, 255, 136, 0.16);
+  border-color: rgba(0, 255, 136, 0.45);
+  transform: translateY(-1px);
+  box-shadow: 0 0 12px rgba(0, 255, 136, 0.15);
+}
+
+.navbar__edit-btn--hidden {
+  display: none;
+}
+
+/* ===========================
+   DASHBOARD — EDIT BUTTON
+   =========================== */
+
+.dash-sidebar__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dash-edit-btn {
+  font-size: 0.75rem;
+  padding: 5px 10px;
+}
+
+/* ===========================
+   EDIT PAGE — LAYOUT
+   =========================== */
+
+body.edit-view {
+  background: linear-gradient(-45deg, #0a0a0a, #001a0d, #000d07, #0a0a0a);
+  background-size: 400% 400%;
+  animation: gradientShift 16s ease infinite;
+}
+
+/* ── Edit form FAQ cards — enhanced style ── */
+.edit-faq-block {
+  position: relative;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.edit-faq-block:hover {
+  border-color: #3a3a3a;
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.04);
+}
+
+/* ── Remove button in edit — styled red ── */
+.edit-faq-remove {
+  color: var(--text-dim) !important;
+  font-size: 1rem !important;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50% !important;
+  padding: 0 !important;
+  transition: all var(--transition) !important;
+}
+
+.edit-faq-remove:hover {
+  color: #ff4d6d !important;
+  background: rgba(255, 77, 109, 0.15) !important;
+  transform: scale(1.15);
+}
+
+/* ── Add FAQ button for edit page — full width dashed ── */
+.edit-add-faq {
+  width: 100%;
+  justify-content: center;
+  padding: 14px 18px;
+  font-size: 0.9rem;
+  border-radius: var(--radius);
+  margin-top: 8px;
+}
+
+/* ── Edit page action buttons ── */
+.edit-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+/* ── Secondary button style ── */
+.btn--secondary {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  text-align: center;
+}
+
+.btn--secondary:hover {
+  border-color: #555;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* ── Edit page responsive ── */
+@media (max-width: 600px) {
+  .navbar__edit-btn {
+    font-size: 0.72rem;
+    padding: 4px 10px;
+  }
+
+  .dash-edit-btn {
+    font-size: 0.68rem;
+    padding: 4px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar__edit-btn {
+    font-size: 0.68rem;
+    padding: 3px 8px;
+    gap: 2px;
+  }
+}

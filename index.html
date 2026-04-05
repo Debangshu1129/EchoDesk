@@ -162,6 +162,7 @@
 
       function connectToBusiness(config) {
         localStorage.setItem('agentConfig', JSON.stringify(config));
+        localStorage.setItem('userRole', 'customer');
         toast.textContent = 'Connecting you to ' + config.agentName + ' at ' + config.businessName + '…';
         toast.classList.add('toast--visible');
         searchResults.innerHTML = '';
